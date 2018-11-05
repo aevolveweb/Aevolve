@@ -194,29 +194,19 @@ contract Aevolve is Owned, Pausable, ERC20 {
     }
 
     // ------------------------------------------------------------------------
-    // Transfer the balance from token owner's account to `to` account
+    // Transfer the balance from token owner's account to `_to` account
     // - Owner's account must have sufficient balance to transfer
     // - 0 value transfers are allowed
     // ------------------------------------------------------------------------
-    function transfer(address to, uint tokens) public whenNotPaused returns (bool success) {
-        require(to != address(this)); //make sure we're not transfering to this contract
+    function transfer(address _to, uint256 _value) public returns (bool) {
+      require(_value <= balances[msg.sender]);
+      require(_to != address(0));
 
-        //check edge cases
-        if (balances[msg.sender] >= tokens
-            && tokens > 0) {
-
-                //update balances
-                balances[msg.sender] = balances[msg.sender].sub(tokens);
-                balances[to] = balances[to].add(tokens);
-
-                //log event
-                emit Transfer(msg.sender, to, tokens);
-                return true;
-        }
-        else {
-            return false;
-        }
-    }
+      balances[msg.sender] = balances[msg.sender].sub(_value);
+      balances[_to] = balances[_to].add(_value);
+      emit Transfer(msg.sender, _to, _value);
+      return true;
+ }
 
     // ------------------------------------------------------------------------
     // Token owner can approve for `spender` to transferFrom(...) `tokens`

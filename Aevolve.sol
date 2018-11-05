@@ -213,6 +213,8 @@ contract Aevolve is Owned, Pausable, ERC20 {
     // from the token owner's account
     // ------------------------------------------------------------------------
     function approve(address spender, uint tokens) public whenNotPaused returns (bool success) {
+        require(spender != address(0));
+
         allowed[msg.sender][spender] = tokens;
         emit Approval(msg.sender, spender, tokens);
         return true;

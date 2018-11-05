@@ -228,6 +228,7 @@ contract Aevolve is Owned, Pausable, ERC20 {
     // ------------------------------------------------------------------------
     function transferFrom(address from, address to, uint tokens) public whenNotPaused returns (bool success) {
         require(to != address(this));
+        require(_to != address(0));
 
         //check edge cases
         if (allowed[from][msg.sender] >= tokens

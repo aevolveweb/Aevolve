@@ -470,9 +470,9 @@ contract VestingFactory is Owned, Pausable  {
 		require(vestingContracts.length > 0);
 		for(uint256 i = 0; i < vestingContracts.length; i++) {
       // Check that there are tokens to release
-      require(vestingContracts[i].releasableAmount(token) != 0);
-
-      vestingContracts[i].release(token);
+      if(vestingContracts[i].releasableAmount(token) != 0) {
+        vestingContracts[i].release(token);
+      }
 		}
 	}
 
